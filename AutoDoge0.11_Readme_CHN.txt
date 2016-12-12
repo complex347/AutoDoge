@@ -1,0 +1,69 @@
+名称: AutoDoge (AUTODock Output Generator / Extractor)
+作者: xywu@PKUHSC
+版本: 0.11 (3/23/2016)
+语言：Python 2.7.6
+描述: 生成AutoDock4的结果报告，提取构象文件，支持自定义输出模式参数，
+      可用于虚拟筛选分析，构象分析和三维构效关系分析，内置狗打印。
+      更多帮助请参照下文。
+操作平台支持: Windows / Linux 
+文件：压缩包中含有AutoDoge0.11_Argparser.bat、AutoDoge0.11_Argparser.py和这个readme。
+
+
+用法：
+  直接双击py用预设参数运行，编辑.bat文件来自定义输出模式。
+  若要用--babel，得先装Open Babel。
+  以下内容请直接在.bat文件中编辑：
+    若无法找到Python："...\python.py" AutoDoge0.11_Argparser.py
+    程序帮助：AutoDoge0.11_Argparser.py -h
+  以下内容请在.py文件中编辑：
+    打开DEBUG模式（大量输出）：25行DEBUG = 0改为DEBUG = 1，保存，运行。
+  注意：Linux系统并未调试，出现的错误请报告，非常感谢！
+
+参数含义：
+  -m [int] (1,2,3,4,5)
+    1：只输出最佳结合构象及其报告
+    2：只输出最佳聚类构象及其报告
+    3：输出最佳结合和最佳聚类构象及其报告（default）
+    4：输出每个聚类中的最佳构象及其报告
+    5：按照聚类分类，输出所有构象，报告文件同-m 4
+  -r [int] (0,1,2)
+    0：报告按文件名排序（default）
+    1：报告按化合物结合能强弱排序
+    2：报告按化合物和对照的RMSD值排序
+  -f [int]
+    若-r为0，为非法输入
+    若-r为1，只输出计算结合能小于给定数值的构象
+    若-r为2，只输出计算RMSD值小于给定数值的构象
+  -p [str, default = AutoDoge_Output]
+    输出文件前缀名
+  --reponly [bool, default = false]
+    只输出报告文件
+  --confonly [bool, default = false]
+    只输出构象文件
+  --allclus [bool, default = false]
+    若-m为1，输出最佳结合聚类里的所有构象
+    若-m为2，输出最佳聚类聚类里的所有构象
+    若-m为3，输出最佳结合聚类和最佳聚类聚类里的所有构象
+    若-m为4或5，为非法输入。事实上-m 4 --allclus就等于-m 5的作用
+  --babel [str, default = pdbqt]
+    调用Babel转换构象文件类型。需要安装OpenBabel
+    若为pdbqt，不转换格式（default）
+  --doge [bool, default = false]
+    ？？？
+  
+例子：
+  AutoDoge0.11_Argparser.py -m 3 -r 1 -f -8 --babel mol2
+    输出最佳结合和最佳聚类构象的报告和构象文件，以结合能排序，输出构象
+    截断值为-8 kcal/mol，并把提取的构象文件通过babel转换为mol2格式。
+  AutoDoge0.11_Argparser.py -m 3 -r 2 -f 1.0 -p whatever
+    输出最佳结合和最佳聚类构象的报告和构象文件，以与对接前文件的均方根
+    偏差排序，截断值为1.0 angstrom，文件输出前缀为whatever。
+  AutoDoge0.11_Argparser.py -m 1 --allclus
+    输出最佳结合构象和报告文件，输出最佳结合聚类的所有构象。
+  AutoDoge0.11_Argparser.py -m 2 --reponly
+    输出最佳聚类构象的报告文件，不输出构象。（计算更快）
+  AutoDoge0.11_Argparser.py -m 4 --confonly
+    输出每个分子所有聚类中结合能最好的构象，不输出报告。
+  AutoDoge0.11_Argparser.py -m 5 --doge
+    提取每个分子每个对接聚类中的所有构象，输出-m 4对应的报告，？？？
+
