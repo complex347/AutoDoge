@@ -13,4 +13,6 @@
 > 
 
 ### Update:
->    Version 0.12: Tkinter GUI
+> Version 0.11: Argparser
+>
+> Version 0.12: Abandoned Argparser, implemented Tkinter GUI
